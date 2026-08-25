@@ -3,15 +3,14 @@ services:
   backend:
     # 1) 도커 컨테이너 이름
     container_name: boot-container
-    # 2) ./backend 경로에 있는 Dockerfile로 도커 이미지를 빌드할 것
-    build:
-      context: ./backend
+    # 2) DockerHub 이미지 내려 받아서 사용
+    image: ${DOCKER_HUB_USERNAME}/my-backend:lastest
     # 3) 이미 존재하는 외부 네트워크를 사용
     networks:
       - my-network
     # 4) 컨테이너 간의 통신만 허용 (외부에서 8080으로 직접 접속할 수 없어 보안 향상)
     expose:
-      - "8080"
+      - '8080'
     # 5) docker-compose를 사용하면 Dockerfile를 통하지 않아도 환경 변수를 직접 컨테이너(boot-container)로 전달 가능
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/${MYSQL_DATABASE}
@@ -24,9 +23,8 @@ services:
   frontend:
     # 1) 도커 컨테이너 이름
     container_name: nginx-container
-    # 2) ./frontend 경로에 있는 Dockerfile로 도커 이미지를 빌드할 것
-    build:
-      context: ./frontend
+    # 2) DockerHub 이미지 내려 받아서 사용
+    image: ${DOCKER_HUB_USERNAME}/my-frontend:lastest
     # 3) 포트 포워딩 (외부에서 80 접속 허용)
     ports:
       - 80:80
